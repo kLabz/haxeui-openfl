@@ -41,22 +41,20 @@ jobs:
       uses: actions/cache@v3.0.11
       with:
         path: .haxelib/
-        key: ${{ matrix.os }}-${{ hashFiles('./.github/workflows/project/install.hxml') }}
+        key: ${{ matrix.os }}-${{ hashFiles('.github/workflows/project/install.hxml') }}
 
     - name: Setup haxelibs (${{ matrix.target }}, haxe ${{ matrix.haxe-version }}, ${{ matrix.os }})
       if: steps.cache-haxelib.outputs.cache-hit != 'true'
       run: |
-        cd .github/workflows/project
         haxelib newrepo
-        haxelib install --always --quiet install.hxml
+        haxelib install --always --quiet .github/workflows/project/install.hxml
         echo "y" | haxelib run openfl setup
 
     - name: Setup haxeui (${{ matrix.target }}, haxe ${{ matrix.haxe-version }}, ${{ matrix.os }})
       run: |
         git clone --branch master https://github.com/haxeui/haxeui-core.git --depth=1
-        cd .github/workflows/project
-        haxelib dev haxeui-core ../../../haxeui-core
-        haxelib dev haxeui-openfl ../../..
+        haxelib dev haxeui-core haxeui-core
+        haxelib dev haxeui-openfl .
 
     - name: Build app (${{ matrix.target }}, haxe ${{ matrix.haxe-version }}, ${{ matrix.os }})
       run: |

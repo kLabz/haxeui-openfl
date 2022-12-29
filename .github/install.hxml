@@ -1,3 +1,4 @@
+# TODO: fix hxcpp resolution for openfl
 # -lib hxcpp:4.2.1
 -lib hscript:2.5.0
 -lib actuate:1.9.0
